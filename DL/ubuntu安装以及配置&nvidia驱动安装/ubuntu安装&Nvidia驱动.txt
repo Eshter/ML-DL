@@ -1,0 +1,151 @@
+【安装unbuntu16.04系统】
+参考网址：http://wenku.baidu.com/link?url=cBpZc_AJ9ycwQeGnJrkwoy2TnrZmPqDyYP1sPFcoKGhqXHXFtbYBoGJy6bJ6_YKtaeJuCB52XnpBjG75y4ebdE2utgWUCt3zlODeZNHTQC_
+*****************************************************************
+*****************************************************************
+
+1.用老毛桃进入待装系统的电脑里面，将原来的分区删掉并【保存】！！！！然后关机重启。
+注：这一步可做可不做其实，有点多余，但是为了安装不出现bug，做一下也就耽误2分钟。。。
+
+2.用Universal-USB-Installer或者ultralISO将下载的ubuntu系统刻制到u盘里面去，刻录好后，弹出u盘
+刻录参考网址：
+http://wenku.baidu.com/link?url=cBpZc_AJ9ycwQeGnJrkwoy2TnrZmPqDyYP1sPFcoKGhqXHXFtbYBoGJy6bJ6_YKtaeJuCB52XnpBjG75y4ebdE2utgWUCt3zlODeZNHTQC_
+
+【台式机】重启开机按F12进入bios，选择u盘启动项，进入。
+3.选择 trying ubuntu without installing
+
+4.进入桌面后，桌面上有一个ubuntu16.04的文件，点击安装 
+【继续】
+      弹出两个选项 【联网安装】/【安装图像什么的】
+      看自己需求吧，，一般选下面一个 ，没必要 联网安装更新啦。。。
+      装好系统后可根据自己要求安装
+【继续】
+      选择【simple chinese】
+【继续】
+选择【城市】
+【继续】
+     选择【最后一项 "其他"】并进行分区！！！
+5。【分区】
+/boot  分区 选择“主分区”，大小为 2G  【ext4】
+/      根目录分区 选择 逻辑分区 大小为110G  【ext4】
+/home   home分区 选择  逻辑分区  大小为 100G  【ext4】
+交换分区 swap分区  选择 主分区 大小位内存的两倍  【交换空间】
+efi       efi分区  选择  逻辑分区 大小  20G吧    这个分区可分可不分，有的系统会有要求！安装ubuntu好像不用
+如果还有空间剩余 给/data吧 选择 逻辑分区 【ext4】
+6.【下一步】
+键盘布局什么的，中国人选中国吧！！
+然后--给计算机命名，输入用户名和密码之类的，按照自己的喜好设定吧
+然后继续，最后会弹出一个是否重启的提示，，重启吧！！！
+
+注：1.若安装完成过程中 出现提示错误的信息，如果不是特别重大的错误，基本继续就行了，有的可能是电脑没联网没更新的错误，忽略掉好啦！
+    2.有时候安装过程会出现各种问题，各种出错，不要慌，【拔掉网线再重装一次】，你会看到奇迹啊！！！请记住：【拔掉网线再重装一次】、【拔掉网线再重装一次】、【拔掉网线再重装一次】重要的话说三次
+**************************************************************
+
+
+
+
+
+
+【修改grub参数】
+参考网址：
+http://www.cnblogs.com/xia-Autumn/p/6294042.html
+http://blog.csdn.net/github_33934628/article/details/52422855?locationNum=3&fps=1
+**************************************************************
+**************************************************************
+1.【如果无法进入Grub菜单】（请参照一下方法） 
+开机启动时，grub菜单 系统默认是隐藏的，去掉隐藏需要做如下操作： 
+你需要修改/etc/default/grub其中的第5行： 
+sudo gedit /etc/default/grub 
+GRUB_HIDDEN_TIMEOUT=0（默认是0，修要修改成大于0的值，比如10） 
+保存后退出！
+再执行： 
+sudo update-grub
+然后重启后在开机时按一下shift键就可以看到grub菜单了！
+
+2.【手动安装显卡驱动导致的错误】//这个错误没遇到过，倘若遇到，可以借鉴一下
+
+进tty控制台重新安装一遍显卡驱动即可 
+PS：开机中用ctrl+alt+F6，进入命令行界面（无图形界面）即tty控制台
+不小心将桌面数据删除
+
+想办法联网后进tty执行
+sudo apt-get install ubuntu-desktop
+*****************************************************************
+
+
+
+
+
+
+
+
+【gcc降级安装】
+可参考：http://www.blogs8.cn/posts/ACqt207
+*****************************************************************
+****************************************************************
+ubuntu的gcc编译器是5.4.0，然而cuda8.0不支持5.0以上的编译器，因此需要降级，把编译器版本降到4.9： 
+在terminal中执行：
+sudo apt-get install g++-4.9
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 20
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 10
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 20
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 10
+sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 30
+sudo update-alternatives --set cc /usr/bin/gcc
+sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30
+sudo update-alternatives --set c++ /usr/bin/g++
+*****************************************************************
+
+
+
+
+
+
+
+
+【安装NVIDIA驱动】
+可参考：http://www.blogs8.cn/posts/ACqt207
+*****************************************************************
+*****************************************************************
+打开terminal【快捷键 CTRL+ALT+t】输入以下指令:
+sudo apt-get update
+然后在系统设置->软件更新->附加驱动->选择nvidia最新驱动(361)->应用更改 (网速比较好的情况，直接用这种方式更新NVIDIA驱动)
+
+注：
+0.倘若网速不咋的，可以去官网下载适合自己网卡型号的驱动 http://www.geforce.com/drivers/results/114942 cd到相应目录 安装即可！
+1.开始之前先要查看显卡驱动是否装好。
+在系统终端输入命令：glxinfo｜grep rendering 如果出现“direct rendering:yes”,则已安装。
+下载驱动 百度搜索英伟达官网，在官网中下载符合你显卡的驱动包（Linux版）。
+2. 完全删除原驱动，包括Ubuntu自带的nv驱动和nvidia-glx-new驱动，此步骤非常重要。
+3. 重新启动，并关闭xserver
+关闭xserver命令（gnome）
+sudo /etc/init.d/gdm stop
+4. 安装驱动：
+sudo sh ./NVIDIA-Linux-x86_64-173.14.05-pkg2.run
+5. 启动xserver：
+sudo /etc/init.d/gdm start
+6. 调整分辨率：
+如果启动后显示分辨率不正常，需要修改xorg.conf。
+cd /etc/X11
+sudo cp xorg.conf xorg.conf.mybackup
+sudo vi /etc/X11/xorg.conf
+确认Device里面的Driver一项定义是“nvidia；
+删除Monitor定义里面的Modeline一行；
+Screen里面Modes一行改为
+Modes ”nvidia-auto-select“
+修改后重新启动xserver。Ctrl-Alt-Backspace。
+7. 调整个人分辨率配置：
+如果登录界面分辨率正常，但用户登录后变为低分辨率，需要在个人选项里面调整：
+System -> Preferences -> Screen Resolutions
+8. 显示驱动细节调整：
+sudo nvidia-settings
+必须用root权限运行，否则配置无法保存到xorg.conf里面。
+搞定。
+参考：https://zhidao.baidu.com/question/872484100322578012.html?qbl=relate_question_0&word=ubuntu%C3%FC%C1%EE%D0%D0%20%B0%B2%D7%B0%20%C7%FD%B6%AF
+*****************************************************************
+
+
+
+
+注：ubuntu 系统 有事没事 都可以 sudo apt-get update 一下
+
+edited by Eshter YUU 2017/3/4  email：1291034986@qq.com
